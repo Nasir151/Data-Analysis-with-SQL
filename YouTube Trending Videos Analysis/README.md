@@ -70,7 +70,7 @@ ORDER BY
     avg_trending_days DESC;
 ```
 
-#### Create a report for the number of distinct videos trending from each category on day of the week. The report will have weekday, category title, No_videos_trended.
+#### Question 3: Create a report for the number of distinct videos trending from each category on day of the week. The report will have weekday, category title, No_videos_trended.
 #### How many distinct videos trended from the category ‘Music’ on weekdays (Monday - Friday)?
 
     Note: The answer cannot be derived from the report. In the report, we have a number of videos trending for each weekday 
@@ -79,12 +79,112 @@ ORDER BY
 
 ```sql
 SELECT snippettitle,
-Count(DISTINCT video_id) AS no_of_videos
+       Count(DISTINCT video_id) AS no_of_videos
 FROM yt_trending_videos a
-INNER JOIN yt_category_map b
-ON a.category_id = b.id
+INNER JOIN yt_category_map b ON a.category_id = b.id
 WHERE Weekday(trending_date) BETWEEN 0 AND 4
-AND snippettitle = 'Music'
+  AND snippettitle = 'Music'
 GROUP BY snippettitle
 ```
 
+#### Question 4: Create a summary report which contains country, category title, total_views, total_likes and avg_trending_days.
+#### What are the total views for category sports in ‘Canada’?
+
+```sql
+SELECT snippettitle AS category_title,
+       country,
+       Sum(total_views) AS total_views,
+       Sum(total_likes) AS total_likes,
+       Avg(no_of_days_trended) AS avg_trending_days
+FROM
+  (SELECT video_id,
+          title,
+          snippettitle,
+          country,
+          Sum(VIEWS) AS total_views,
+          Sum(likes) AS total_likes,
+          Count(trending_date) AS no_of_days_trended
+   FROM yt_trending_videos a
+   INNER JOIN yt_category_map b ON a.category_id = b.id
+   GROUP BY video_id,
+            title,
+            snippettitle,
+            country) c
+WHERE country = 'Canada'
+  AND snippettitle = 'Sports'
+GROUP BY snippettitle,
+         country
+ORDER BY country,
+         avg_trending_days DESC
+```
+
+#### Question 5: Rank the videos based on views, likes within each country. Which country has the highest number of videos with rank for views and rank of likes both in top 20?
+
+```sql
+SELECT country,
+       Count(video_id) AS no_of_videos
+FROM
+  (SELECT video_id,
+          title,
+          country,
+          VIEWS,
+          likes,
+          Rank() OVER (PARTITION BY country
+                       ORDER BY VIEWS DESC) AS rank_views,
+                      Rank() OVER (PARTITION BY country
+                                   ORDER BY likes DESC) AS rank_likes
+   FROM yt_trending_videos) a
+WHERE rank_views <= 20
+  AND rank_likes <= 20
+GROUP BY country
+ORDER BY no_of_videos DESC
+```
+
+#### Question 6: Generate a report at video level with video viewership rating within the category. (Report at video level means the output should be unique at video_id).
+    Formula to assign the rating: ((Views - min(views))*100 ) / max(views) - min(views)
+    where max(views) is maximum views in the respective video’s category
+    and min(views) is minimum views in the respective video’s category
+##### What is the average rating of the category Music?
+
+```sql
+SELECT category_title,
+       Avg(rating) AS avg_rating
+FROM
+  (SELECT c.*,
+          Round(((VIEWS - min_views) * 100) / (max_views - min_views), 0) AS rating
+   FROM
+     (SELECT DISTINCT video_id,
+                      title,
+                      snippettitle AS category_title,
+                      VIEWS,
+                      Max(VIEWS) OVER (PARTITION BY category_id) AS max_views,
+                                      Min(VIEWS) OVER (PARTITION BY category_id) AS min_views
+      FROM yt_trending_videos a
+      INNER JOIN yt_category_map b ON a.category_id = b.id) c) d
+GROUP BY category_title
+```
+
+#### Question 7: Generate a report at video level with video ratings. (Report at video level means the output should be unique at video_id).
+    Rating formula to assign the rating: ((Likes - min(likes))*100 ) / max(likes) - min(likes)
+    where max(likes) is maximum likes in the respective video’s category
+    and min(likes) is minimum likes in the respective video’s category
+#### Which category has the highest average rating based on likes?
+
+```sql
+SELECT category_title,
+       Avg(rating) AS avg_rating
+FROM
+  (SELECT c.*,
+          Round(((likes - min_likes) * 100) / (max_likes - min_likes), 0) AS rating
+   FROM
+     (SELECT DISTINCT video_id,
+                      title,
+                      snippettitle AS category_title,
+                      likes,
+                      Max(likes) OVER (PARTITION BY category_id) AS max_likes,
+                                      Min(likes) OVER (PARTITION BY category_id) AS min_likes
+      FROM yt_trending_videos a
+      INNER JOIN yt_category_map b ON a.category_id = b.id) c) d
+GROUP BY category_title
+ORDER BY avg_rating DESC
+```
