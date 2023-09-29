@@ -14,3 +14,77 @@ We have three tables for analysis:
 1. YT_trending_videos: Contains video-level information, including trending dates and metrics like comments, likes, and views.
 2. YT_channel_map: Provides channel_id mapping to channel titles.
 3. YT_category_map: Maps videos to categories based on their type.
+-----------------------------------------------------------------------------------------------------------------------------------------
+#### Question 1: Create a report for overall distribution of duration of trending videos by each country. The report will have video_id, video name (title), country, No_of_days_trended.
+#### How many videos have trended for more than 5 days in the US?
+
+```sql
+SELECT
+    country,
+    COUNT(video_id) AS no_of_videos
+FROM
+    (SELECT
+        video_id,
+        title,
+        country,
+        COUNT(trending_date) AS no_of_days_trended
+    FROM
+        yt_trending_videos
+    GROUP BY
+        video_id,
+        title,
+        country) a
+WHERE
+    no_of_days_trended > 5
+    AND country = 'US'
+GROUP BY
+    country;
+```
+
+#### Question 2: Create a report for overall distribution of duration of trending videos by each category. The report will have video_id, category title, No_of_days_trended.
+#### Which category has the highest average trending period?
+
+```sql
+SELECT
+    snippettitle AS category_title,
+    AVG(no_of_days_trended) AS avg_trending_days
+FROM
+    (SELECT
+        video_id,
+        title,
+        snippettitle,
+        COUNT(trending_date) AS no_of_days_trended
+    FROM
+        yt_trending_videos a
+    INNER JOIN
+        yt_category_map b
+    ON
+        a.category_id = b.id
+    GROUP BY
+        video_id,
+        title,
+        snippettitle) a
+GROUP BY
+    snippettitle
+ORDER BY
+    avg_trending_days DESC;
+```
+
+#### Create a report for the number of distinct videos trending from each category on day of the week. The report will have weekday, category title, No_videos_trended.
+#### How many distinct videos trended from the category ‘Music’ on weekdays (Monday - Friday)?
+
+    Note: The answer cannot be derived from the report. In the report, we have a number of videos trending for each weekday 
+    by category. Hence, if a video has trended on multiple days, it will be counted on each day. The question asks for 
+    distinct videos and hence write the query considering that.
+
+```sql
+SELECT snippettitle,
+Count(DISTINCT video_id) AS no_of_videos
+FROM yt_trending_videos a
+INNER JOIN yt_category_map b
+ON a.category_id = b.id
+WHERE Weekday(trending_date) BETWEEN 0 AND 4
+AND snippettitle = 'Music'
+GROUP BY snippettitle
+```
+
