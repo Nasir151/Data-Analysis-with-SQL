@@ -12,10 +12,23 @@ YouTube's trending videos vary by location, and the impact of engagement metrics
 
 We have three tables for analysis:
 1. YT_trending_videos: Contains video-level information, including trending dates and metrics like comments, likes, and views.
+
+![image](https://github.com/Nasir151/SQL-Projects/assets/94509995/05326e24-daf5-4671-bb1e-8b50d3325129)
+
 2. YT_channel_map: Provides channel_id mapping to channel titles.
+
+![image](https://github.com/Nasir151/SQL-Projects/assets/94509995/290de1f0-5ab5-4e0f-be1d-abde1ed4153a)
+
 3. YT_category_map: Maps videos to categories based on their type.
+
+![image](https://github.com/Nasir151/SQL-Projects/assets/94509995/03cdb0e6-8952-48e5-9207-13fbc0f99c19)
+
 -----------------------------------------------------------------------------------------------------------------------------------------
-#### Question 1: Create a report for overall distribution of duration of trending videos by each country. The report will have video_id, video name (title), country, No_of_days_trended.
+#### Question 1: Create a report for overall distribution of duration of trending videos by each country. The report will have video_id, video name (title), country, No_of_days_trended. 
+Sample Report:
+
+![image](https://github.com/Nasir151/SQL-Projects/assets/94509995/40c0a7d3-ff36-4782-99cb-9a4a4ca7593d)
+
 #### How many videos have trended for more than 5 days in the US?
 
 ```sql
@@ -42,6 +55,10 @@ GROUP BY
 ```
 
 #### Question 2: Create a report for overall distribution of duration of trending videos by each category. The report will have video_id, category title, No_of_days_trended.
+Sample Report:
+
+![image](https://github.com/Nasir151/SQL-Projects/assets/94509995/940363fc-342a-4f1d-aa68-e40f456e4582)
+
 #### Which category has the highest average trending period?
 
 ```sql
@@ -71,11 +88,15 @@ ORDER BY
 ```
 
 #### Question 3: Create a report for the number of distinct videos trending from each category on day of the week. The report will have weekday, category title, No_videos_trended.
-#### How many distinct videos trended from the category ‘Music’ on weekdays (Monday - Friday)?
+Sample Report:
 
-    Note: The answer cannot be derived from the report. In the report, we have a number of videos trending for each weekday 
-    by category. Hence, if a video has trended on multiple days, it will be counted on each day. The question asks for 
-    distinct videos and hence write the query considering that.
+![image](https://github.com/Nasir151/SQL-Projects/assets/94509995/1a88ed27-17a3-4b6c-92f1-99a539c60801)
+
+    Note: The answer cannot be derived from the report. In the report, we have a number of videos trending for each
+    weekday by category. Hence, if a video has trended on multiple days, it will be counted on each day. The
+    question asks for distinct videos and hence write the query considering that.
+    
+#### How many distinct videos trended from the category ‘Music’ on weekdays (Monday - Friday)?
 
 ```sql
 SELECT snippettitle,
@@ -88,6 +109,10 @@ GROUP BY snippettitle
 ```
 
 #### Question 4: Create a summary report which contains country, category title, total_views, total_likes and avg_trending_days.
+Sample Report:
+
+![image](https://github.com/Nasir151/SQL-Projects/assets/94509995/9545e288-e1db-4bb6-b0c0-e3b877bec155)
+
 #### What are the total views for category sports in ‘Canada’?
 
 ```sql
@@ -144,6 +169,10 @@ ORDER BY no_of_videos DESC
     Formula to assign the rating: ((Views - min(views))*100 ) / max(views) - min(views)
     where max(views) is maximum views in the respective video’s category
     and min(views) is minimum views in the respective video’s category
+Sample Report:
+
+![image](https://github.com/Nasir151/SQL-Projects/assets/94509995/8bcd01d2-adfb-48cd-89ac-19c9a2456f89)
+
 ##### What is the average rating of the category Music?
 
 ```sql
@@ -168,6 +197,10 @@ GROUP BY category_title
     Rating formula to assign the rating: ((Likes - min(likes))*100 ) / max(likes) - min(likes)
     where max(likes) is maximum likes in the respective video’s category
     and min(likes) is minimum likes in the respective video’s category
+Sample Report:
+
+![image](https://github.com/Nasir151/SQL-Projects/assets/94509995/5f32ce2c-1493-4f9f-987e-f9014abefd01)
+
 #### Which category has the highest average rating based on likes?
 
 ```sql
