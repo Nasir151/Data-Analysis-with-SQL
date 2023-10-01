@@ -14,10 +14,19 @@ The database consists of the following tables:
 6. `cr_payments`: Contains payment details.
 7. `cr_productlines`: Stores product line information.
 8. `cr_products`: Contains data about individual products.
+
+![image](https://github.com/Nasir151/SQL-Projects/assets/94509995/fd2d8d44-d5f7-429a-a72f-e519953650ce)
+
 ------------------------------------------------------------------------------------------------------------------------------------------
 #### Question 1: Find out the top 3 Products (“productLine”) for each month that generated the highest profit.
     Note: Profit = ( Price per unit - Buying Price per Unit ) x No. of Units Ordered
-#### Which “productline” generated the highest profit in the June Month? Submit the 2nd highest profit amount for the month of October. Select the “productline” which is not in the top 3 lists in the month of November.
+Sample Ouput: 
+
+![image](https://github.com/Nasir151/SQL-Projects/assets/94509995/b590aac1-f15b-40ce-a4d8-0c6dc8f29c4e)
+
+#### Which “productline” generated the highest profit in the June Month? 
+#### Submit the 2nd highest profit amount for the month of October. 
+#### Submit the “productline” which is not in the top 3 lists in the month of November.
 
 ```sql
 WITH mains AS (
@@ -59,7 +68,16 @@ WHERE
     Note: Please make sure that MoM is calculated for each year. Meaning, that ideally MoM growth of the first month 
     of every year should be NULL as shown in the sample output below.
 
-#### What is the MoM for Feb 2005? What is the MoM for June 2004? For the year 2004, select which month shows negative MoM growth?
+Sample Output:
+
+![image](https://github.com/Nasir151/SQL-Projects/assets/94509995/e0000e04-1d09-43d0-bcea-1cbb527de10b)
+
+Only the first 3 and last months are shown for a respective year. This is the sample output. You need to have all the months of a year
+in the final output.
+
+#### What is the MoM for Feb 2005? 
+#### What is the MoM for June 2004? 
+#### For the year 2004, select which month shows negative MoM growth?
 
 ```sql
 select
@@ -93,7 +111,12 @@ from
     Conditions to get following details,
     Order Above AVG = Actual Order Value >= AVG Order Value
     Order Below AVG = Actual Order Value < AVG Order Value
-#### What is the Average Order Value? Submit the number of orders above and below AOV for customer number 205.
+
+![image](https://github.com/Nasir151/SQL-Projects/assets/94509995/ec09a4a2-c714-4245-992e-c3523447d541)
+
+#### What is the Average Order Value? 
+    Note: Round off the value to 2 decimal and use it for the rest of the calculation.
+#### Submit the number of orders above and below AOV for customer number 205.
  ```sql
 SELECT
     customernumber,
