@@ -98,7 +98,7 @@ ORDER BY gross_profit,
 ```
 
 #### Task 7: How much total money we spent on Facebook on campaigns with negative ROMI.
-  Note: Use LOCATE function to find the substring in the string.
+    Note: Use LOCATE function to find the substring in the string.
 
 ```sql
 SELECT Sum(mark_spent)
