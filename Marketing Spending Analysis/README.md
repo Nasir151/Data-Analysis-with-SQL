@@ -20,7 +20,7 @@ To evaluate the effectiveness of marketing campaigns, we will calculate the foll
 
   Note: ROMI is the most important metric and it is used as the ultimate way to evaluate if the campaign is good or bad.
   
-  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------333
+  -----------------------------------------------------------------------------------------------------------------------------------
 #### Task 1: Calculate Click-through rate(CTR), Conversion 1, Conversion 2, Average order value(AOV), Cost per click (CPC), Customer acquisition cost (CAC), ROMI for all records.
 
 Question 1.1: What is CTR for google_wide campaign on February 1, 2021?
