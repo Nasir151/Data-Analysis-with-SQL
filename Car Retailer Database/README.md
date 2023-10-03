@@ -199,8 +199,7 @@ WITH averagequantities AS (
     GROUP BY
         LEFT(p.productcode, CHARINDEX('_', p.productcode) - 1)
 )
-```
-```sql
+
 select aq.productcategory, p.productname, od.quantityordered, aq.avgquantity
 from cr_orderdetails od
 join cr_products p on od.productcode = p.productcode
